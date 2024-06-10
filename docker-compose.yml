@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  # TODO: Enter your project name here
+  project_name:
+    build:
+      context: .
+    restart: always
+    ports:
+      - '9000:9000'
