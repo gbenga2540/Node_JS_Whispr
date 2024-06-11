@@ -1,6 +1,5 @@
 import { Model, Document, PipelineStage } from 'mongoose';
-import { ESortOrder, ISortOrder } from '../types/pagination';
-import { PageRes } from '../types/pagination';
+import { ESortOrder, ISortOrder, PageRes } from '../types/pagination';
 
 const PagingBase = async <T extends Document>(
   collection: Model<T>,

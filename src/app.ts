@@ -27,9 +27,11 @@ const port = parseInt(EnvConfig.serverPort, 10) || 5000;
 setupRoutes(app);
 
 // Express server error
+/* eslint-disable no-undef */
 const serverError = (error: NodeJS.ErrnoException): void => {
   if (error.syscall !== 'listen') throw error;
-  let bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+  /* eslint-disable no-fallthrough */
   switch (error.code) {
     case 'EACCESS':
       logger.error(`${bind} requires elevated privileges`);

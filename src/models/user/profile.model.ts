@@ -11,6 +11,19 @@ const schema = new Schema<IProfile>(
       type: String,
       required: true,
     },
+    full_name: {
+      type: String,
+      required: true,
+    },
+    phone_number: {
+      type: String,
+    },
+    bio: {
+      type: String,
+    },
+    profile_picture: {
+      type: String,
+    },
   },
   {
     timestamps: true,

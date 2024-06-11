@@ -11,6 +11,11 @@ const schema = new Schema<IUser>(
       type: String,
       required: true,
     },
+    banned: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   { timestamps: true },
 );

@@ -3,12 +3,12 @@ import { Token } from '../models/user/token.model';
 
 export class TokenAction {
   static async generateSecretAndToken(email: string | undefined) {
-    let secret = await speakeasy.generateSecret({
+    const secret = await speakeasy.generateSecret({
       length: 20,
       otpauth_url: false,
     });
 
-    let token = speakeasy.totp({
+    const token = speakeasy.totp({
       secret: secret.base32,
       encoding: 'base32',
       digits: 4,
@@ -26,9 +26,9 @@ export class TokenAction {
   }
 
   static async validateToken(email: string, token: string) {
-    let token_instance = await Token.findOne({ email });
+    const token_instance = await Token.findOne({ email });
     if (token_instance) {
-      let token_validates = await speakeasy.totp.verify({
+      const token_validates = await speakeasy.totp.verify({
         secret: token_instance.base32,
         encoding: 'base32',
         token: token,

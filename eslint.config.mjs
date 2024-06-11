@@ -78,7 +78,6 @@ export default [
       'max-len': ['error', { 'code': 200 }],
       'max-lines': ['error', { 'max': 500 }],
       'keyword-spacing': 'error',
-      'multiline-ternary': ['error', 'never'],
       'no-mixed-operators': 'error',
       'no-multiple-empty-lines': ['error', { 'max': 2, 'maxEOF': 1 }],
       'no-whitespace-before-property': 'error',
@@ -94,7 +93,10 @@ export default [
       'no-var': 'error',
       'object-shorthand': 'off',
       'prefer-const': 'error',
-      'prefer-template': 'warn'
+      'prefer-template': 'warn',
+      'no-prototype-builtins': 'off',
+      'multiline-ternary': 'off',
+      '@typescript-eslint/no-namespace': 'off'
     }
   }
 ];

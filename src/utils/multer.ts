@@ -4,10 +4,12 @@ import { EnvConfig } from './get-env';
 import { handleApiResponse } from '../utils/api-response';
 import { storage as cloudinaryStorage } from './cloudinary';
 
+/* eslint-disable no-unused-vars */
 export enum FileType {
   IMAGE = 'IMAGE',
   FILE = 'FILE',
 }
+/* eslint-enable no-unused-vars */
 type Middleware = (req: Request, res: Response, next: NextFunction) => void;
 
 const supported_image_format = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -30,7 +32,7 @@ export class MulterMiddleware {
       limits: { fileSize: parseInt(EnvConfig.multerFileSizeLimit, 10) },
       fileFilter: (
         _: Request,
-        file: Express.Multer.File,
+        file: Express.Multer.File, // eslint-disable-line no-undef
         callback: multer.FileFilterCallback,
       ) => {
         const fieldName = file.fieldname;
@@ -53,9 +55,9 @@ export class MulterMiddleware {
 }
 
 const get_file_ext = (file_type: FileType): string[] => {
-  if (file_type == FileType.IMAGE) {
+  if (file_type === FileType.IMAGE) {
     return supported_image_format;
-  } else if (file_type == FileType.FILE) {
+  } else if (file_type === FileType.FILE) {
     return supported_file_formats;
   } else {
     return [];

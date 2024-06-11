@@ -1,4 +1,3 @@
-import jwt, { GetPublicKeyOrSecret, Secret } from 'jsonwebtoken';
 import { User } from '../../models/user/user.model';
 import { Profile } from '../../models/user/profile.model';
 import { hasher } from '../../utils/bcrypt';
@@ -46,12 +45,12 @@ export default class UserServices {
       ]);
 
       payload = {
-        user_id: new_user[0]._id,
+        user_id: new_user[0]._id.toString(),
       };
     });
 
     const { status, data } = await authResFactory(
-      // @ts-ignore
+      // @ts-expect-error dbSession
       payload,
       new_user?.[0],
       profile?.[0],
@@ -79,7 +78,7 @@ export default class UserServices {
       logger.warn('User profile not found');
       return {
         status: 401,
-        msg: "You can't login at the moment, please contact an admin!",
+        msg: 'You cannot login at the moment, please contact an admin!',
       };
     }
 
@@ -93,7 +92,7 @@ export default class UserServices {
     }
 
     const { status, data } = await authResFactory(
-      { user_id: check_user._id },
+      { user_id: check_user._id.toString() },
       check_user,
       user_profile,
     );

@@ -28,6 +28,7 @@ try {
 
   copyRecursiveSync(sourceDirectory, destinationDirectory);
 
+  /* eslint-disable no-console */
   console.log('\x1b[32m==================================\x1b[0m');
   console.log('\x1b[32mnon-TS files copied successfully!!\x1b[0m');
   console.log('\x1b[32m==================================\x1b[0m');

@@ -5,15 +5,14 @@ import jwt, {
   JwtPayload,
 } from 'jsonwebtoken';
 import logger from './logger';
-import { Types } from 'mongoose';
 import { EnvConfig } from './get-env';
 
 export interface MyJwtPayload extends JwtPayload {
-  user_id: Types.ObjectId;
+  user_id: string;
 }
 
 export const signJwt = (
-  payload: Object,
+  payload: object,
   duration: string,
   options: SignOptions = {},
 ) => {
@@ -25,13 +24,12 @@ export const signJwt = (
     });
   } catch (error) {
     logger.error(error);
-    return;
+    return null;
   }
 };
 
 export const verifyJwt = (token: string) => {
   try {
-    // @ts-ignore
     const publicKey: Secret | GetPublicKeyOrSecret | string =
       EnvConfig.jwtPrivateKey;
     return jwt.verify(token, publicKey);

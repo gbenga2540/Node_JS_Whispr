@@ -9,6 +9,7 @@ export interface ApiServiceResponse<T = void> {
   msg?: string;
   data?: T;
 }
+// eslint-disable-next-line no-unused-vars
 type ErrorHandler<T extends Error> = (res: Response, err: T) => void;
 
 export function handleApiResponse<T>(
@@ -23,6 +24,7 @@ export function handleApiResponse<T>(
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleServerErrors: ErrorHandler<any> = (res, err) => {
   logger.warn(err.message);
   res.status(500).json({

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { GetPublicKeyOrSecret } from 'jsonwebtoken';
+import jwt, { GetPublicKeyOrSecret, Secret } from 'jsonwebtoken';
 import { MyJwtPayload } from '../../utils/jwt';
 import { EnvConfig } from '../../utils/get-env';
 
@@ -21,7 +21,6 @@ export const verifyTokenMiddleware = async (
     const bearer = bearer_header.split(' ');
     const bearer_token = bearer[1];
 
-    // @ts-ignore
     const publicKey: Secret | GetPublicKeyOrSecret | string =
       EnvConfig.jwtPrivateKey;
     try {
@@ -29,9 +28,10 @@ export const verifyTokenMiddleware = async (
         bearer_token,
         publicKey,
       )) as MyJwtPayload;
-      // @ts-ignore
+
       req.user_id = decoded.user_id;
       next();
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       res.json({ status: 403, msg: 'Forbidden Access/ Invalid Token' });
     }

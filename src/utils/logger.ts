@@ -16,6 +16,7 @@ const logger = createLogger({
   ],
 });
 
+/* eslint-disable no-undef */
 process.on('UnhandledRejection', error => {
   logger.error('Unhandled Rejection:', error);
 });

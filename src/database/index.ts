@@ -30,18 +30,19 @@ mongoose
 // db connection events
 mongoose.connection.on('connected', () => {
   EnvConfig.nodeEnv === 'development'
-    ? logger.debug('Mongoose connected open to ' + uri)
+    ? logger.debug(`Mongoose connected open to ${uri}`)
     : logger.info('Mongoose Connected!');
 });
 
 mongoose.connection.on('error', error => {
-  logger.debug('Mongoose default connection error  ' + error);
+  logger.debug(`Mongoose default connection error ${error}`);
 });
 
 mongoose.connection.on('disconnected', () => {
   logger.debug('Mongoose default connection disconnected');
 });
 
+/* eslint-disable no-undef */
 const gracefulExit = async () => {
   await mongoose.connection.close();
   logger.info('Mongoose default connection disconnected by app termination');
