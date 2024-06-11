@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { EnvConfig } from './get-env';
 
 cloudinary.config({
   cloud_name: process.env.cloudinaryCloudName,
@@ -10,6 +11,11 @@ cloudinary.config({
 
 export const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
+  params: async (_req, _file) => {
+    return {
+      folder: EnvConfig.cloudinaryFolderName,
+    };
+  },
 });
 
 export default class Cloudinary {

@@ -21,6 +21,7 @@ export const EnvConfig = {
   cloudinaryCloudName: getEnv<string>('CLOUDINARY_CLOUD_NAME'),
   cloudinaryApiKey: getEnv<string>('CLOUDINARY_API_KEY'),
   cloudinaryApiSecret: getEnv<string>('CLOUDINARY_API_SECRET'),
+  cloudinaryFolderName: getEnv<string>('CLOUDINARY_FOLDER_NAME'),
   multerFileSizeLimit: getEnv<string>('MULTER_FILE_SIZE_LIMIT'),
   clientOrigin: getEnv<string>('CLIENT_ORIGIN'),
 };
