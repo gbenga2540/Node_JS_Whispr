@@ -1,5 +1,6 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import logger from './logger';
+import Cloudinary from './cloudinary';
 
 /**
  * Pass the data type this service would return into ApiServiceResponse
@@ -9,8 +10,11 @@ export interface ApiServiceResponse<T = void> {
   msg?: string;
   data?: T;
 }
-// eslint-disable-next-line no-unused-vars
-type ErrorHandler<T extends Error> = (res: Response, err: T) => void;
+type ErrorHandler<T extends Error> = (
+  req: Request,
+  res: Response,
+  err: T,
+) => void;
 
 export function handleApiResponse<T>(
   res: Response,
@@ -25,8 +29,9 @@ export function handleApiResponse<T>(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const handleServerErrors: ErrorHandler<any> = (res, err) => {
+export const handleServerErrors: ErrorHandler<any> = async (req, res, err) => {
   logger.warn(err.message);
+  await Cloudinary.cleanUpCloudinary(req?.files);
   res.status(500).json({
     msg: 'This is on us. Our team is working to resolve this issue, thanks for your understanding',
   });

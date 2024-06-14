@@ -31,7 +31,6 @@ export const verifyTokenMiddleware = async (
 
       req.user_id = decoded.user_id;
       next();
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       res.json({ status: 403, msg: 'Forbidden Access/ Invalid Token' });
     }

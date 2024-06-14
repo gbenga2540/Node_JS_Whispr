@@ -1,0 +1,17 @@
+{
+  // language - current active spelling language
+  "language": "en",
+  // words - list of words to be always considered correct
+  "words": [
+    "whispr",
+    "Whispr",
+    "dtos",
+    "Hasher",
+    "hasher",
+    "cloudinary",
+    "Cloudinary",
+    "fieldname"
+  ],
+  // flagWords - list of words to be always considered incorrect
+  "flagWords": [""]
+}

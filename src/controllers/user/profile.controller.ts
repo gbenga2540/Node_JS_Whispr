@@ -14,7 +14,7 @@ export class ProfileController {
       );
       handleApiResponse(res, result);
     } catch (error) {
-      handleServerErrors(res, error);
+      handleServerErrors(req, res, error);
     }
   }
 
@@ -25,7 +25,7 @@ export class ProfileController {
       );
       handleApiResponse(res, result);
     } catch (error) {
-      handleServerErrors(res, error);
+      handleServerErrors(req, res, error);
     }
   }
 }

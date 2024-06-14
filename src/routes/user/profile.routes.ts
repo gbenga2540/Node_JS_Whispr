@@ -22,7 +22,7 @@ export class ProfileRoutesV1 {
     this.router.patch(
       '/user',
       verifyTokenMiddleware,
-      uploadFactory({ profile_image: FileType.IMAGE }),
+      uploadFactory({ profile_image: FileType.IMAGE }), // TODO: Temporary till the form-data multer thing is fixed
       this.profile_controller.updateUserProfile,
     );
     this.router.get(

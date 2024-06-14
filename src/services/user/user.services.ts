@@ -1,6 +1,6 @@
 import { User } from '../../models/user/user.model';
 import { Profile } from '../../models/user/profile.model';
-import { hasher } from '../../utils/bcrypt';
+import { bcryptHasher } from '../../utils/bcrypt';
 import { ApiServiceResponse } from '../../utils/api-response';
 import logger from '../../utils/logger';
 import { authResFactory } from '../../utils/auth-res-factory';
@@ -9,40 +9,141 @@ import {
   AuthResponse,
   LoginRequest,
   RegisterRequest,
+  RequestVerCodeRequest,
+  VerifyVerCodeRequest,
 } from '../../dtos/user/user.dto';
+import fs from 'fs';
+import path from 'path';
+import { TokenAction } from '../../utils/token-action';
+import { transporter } from '../../utils/nodemailer-transporter';
+import { nodemailerConfig } from '../../config';
+import { UploadedFiles, UploadedFilesService } from '../../types/files';
+import Cloudinary from '../../utils/cloudinary';
 
 export default class UserServices {
+  // =============================================
+  // Request verification Code
+  // =============================================
+  private assetDelivery() {
+    const assetPath: string[] = ['../../assets/logo.png'];
+    const singlePath = assetPath.map(idx => path.resolve(__dirname, idx)); // eslint-disable-line no-undef
+    const images = singlePath.map(idx => fs.readFileSync(idx));
+    const attachments: any[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    images.map((file, index) => {
+      attachments.push({
+        filename: `Attachment-${index}.jpg`,
+        content: file,
+        cid: `Attachment-${index}`,
+      });
+    });
+
+    return attachments;
+  }
+
+  public async requestVerCodeService(
+    user: RequestVerCodeRequest,
+  ): Promise<ApiServiceResponse<string>> {
+    const { email, phone_number, user_name } = user;
+
+    const [existing_user, existing_profile] = await Promise.all([
+      User.findOne({ $or: [{ email }, { user_name }] }),
+      Profile.findOne({ phone_number }),
+    ]);
+    if (existing_user || existing_profile) {
+      return { status: 400, msg: 'Invalid credentials' };
+    }
+
+    const token = await TokenAction.generateSecretAndToken(email);
+
+    const templatePath = path.join(
+      __dirname, // eslint-disable-line no-undef
+      '..',
+      '..',
+      'view',
+      'verification_code.html',
+    );
+    const htmlContent = fs.readFileSync(templatePath, 'utf8');
+
+    await transporter.sendMail({
+      from: `Whispr ${nodemailerConfig.user}`,
+      to: email,
+      subject: 'Verification code for your Whispr account',
+      html: htmlContent.replace('${token}', token),
+      attachments: this.assetDelivery(),
+    });
+
+    return {
+      status: 200,
+      data: 'Your verification code has been sent to your email!',
+    };
+  }
+
+  // =============================================
+  // Verify the verification code
+  // =============================================
+  public async verifyVerCodeService(
+    user: VerifyVerCodeRequest,
+  ): Promise<ApiServiceResponse<boolean>> {
+    const { email, token } = user;
+
+    const token_validates = await TokenAction.validateToken(email, token);
+
+    if (!token_validates) {
+      return { status: 401, msg: 'Invalid/Expired token!' };
+    }
+
+    return {
+      status: 200,
+      data: token_validates,
+    };
+  }
+
   // =============================================
   // Register new user
   // =============================================
   public async registerUserService(
+    files: UploadedFiles,
     user: RegisterRequest,
   ): Promise<ApiServiceResponse<{ token: string; user: AuthResponse }>> {
-    const existing_mail = await User.findOne({ email: user.email });
+    const { email, password, user_name, full_name, bio, phone_number } = user;
 
-    if (existing_mail !== null) {
+    const { profile_picture } =
+      files as UploadedFilesService<'profile_picture'>;
+
+    const [existing_user, existing_profile] = await Promise.all([
+      User.findOne({ $or: [{ email }, { user_name }] }),
+      Profile.findOne({ phone_number }),
+    ]);
+
+    if (existing_user || existing_profile) {
+      await Cloudinary.cleanUpCloudinary(files);
       return { status: 400, msg: 'Existing/Invalid credentials' };
     }
 
-    let payload;
     let new_user;
     let profile;
+    let payload;
 
     await startTransaction(async session => {
-      const new_user = await User.create(
+      new_user = await User.create(
+        [{ email, password: await bcryptHasher.hashPasswordHandler(password) }],
+        { session },
+      );
+
+      profile = await Profile.create(
         [
           {
-            email: user.email,
-            password: await hasher.hashPasswordHandler(user.password),
+            user: new_user[0]._id,
+            user_name,
+            full_name,
+            phone_number,
+            bio,
+            profile_picture: profile_picture?.[0]?.path,
           },
         ],
         { session },
       );
-
-      profile = await Profile.create([
-        { user: new_user[0]._id, user_name: user.user_name },
-        { session },
-      ]);
 
       payload = {
         user_id: new_user[0]._id.toString(),
@@ -65,9 +166,10 @@ export default class UserServices {
     user: LoginRequest,
   ): Promise<ApiServiceResponse<{ token: string; user: AuthResponse }>> {
     const { email, password } = user;
+
     const check_user = await User.findOne({ email });
     if (check_user === null) {
-      return { status: 401, msg: 'Invalid credentials' };
+      return { status: 401, msg: 'Invalid credentials!' };
     }
 
     const user_profile = await Profile.findOne({
@@ -82,16 +184,16 @@ export default class UserServices {
       };
     }
 
-    const is_password_match = await hasher.comparePassword(
+    const is_password_match = await bcryptHasher.comparePassword(
       password,
       check_user?.password,
     );
 
     if (!is_password_match) {
-      return { status: 400, msg: 'Invalid credentials' };
+      return { status: 400, msg: 'Invalid credentials!' };
     }
 
-    const { status, data } = await authResFactory(
+    const { status, data } = authResFactory(
       { user_id: check_user._id.toString() },
       check_user,
       user_profile,

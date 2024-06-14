@@ -1,7 +1,7 @@
 /**
  *
- * @author alob-mtc
- * modified by @author gbenga2540
+ * creator: @alob-mtc
+ * modified by: @gbenga2540
  *
  */
 

@@ -4,12 +4,10 @@ import { EnvConfig } from './get-env';
 import { handleApiResponse } from '../utils/api-response';
 import { storage as cloudinaryStorage } from './cloudinary';
 
-/* eslint-disable no-unused-vars */
 export enum FileType {
   IMAGE = 'IMAGE',
   FILE = 'FILE',
 }
-/* eslint-enable no-unused-vars */
 type Middleware = (req: Request, res: Response, next: NextFunction) => void;
 
 const supported_image_format = ['image/png', 'image/jpg', 'image/jpeg'];

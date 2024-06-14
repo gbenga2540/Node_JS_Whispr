@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 export enum ESortOrder {
   ascending = 'asc',
   descending = 'desc',
 }
-/* eslint-enable no-unused-vars */
 export type ISortOrder = `${ESortOrder}`;
 
 export interface PageQueryParam {

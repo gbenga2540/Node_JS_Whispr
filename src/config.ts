@@ -10,7 +10,6 @@ export const nodemailerConfig = {
   user: EnvConfig.mailUser,
   password: EnvConfig.mailPassword,
 };
-
 export const cloudinaryConfig = {
   cloud_name: EnvConfig.cloudinaryCloudName,
   api_key: EnvConfig.cloudinaryApiKey,

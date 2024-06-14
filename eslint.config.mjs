@@ -3,6 +3,7 @@ import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import prettierConfig from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
+import unusedImports from "eslint-plugin-unused-imports";
 
 export default [
   {
@@ -47,7 +48,8 @@ export default [
   prettierConfig,
   {
     plugins: {
-      prettier: prettierPlugin
+      "unused-imports": unusedImports,
+      prettier: prettierPlugin,
     },
     rules: {
       '@typescript-eslint/no-var-requires': 'off',
@@ -66,7 +68,7 @@ export default [
       'no-useless-concat': 'error',
       'no-useless-return': 'error',
       'no-constant-condition': 'warn',
-      'no-unused-vars': ['warn', { 'argsIgnorePattern': 'req|res|next|__' }],
+      'no-unused-vars': 'off',
       // Enhance Readability
       'indent': ['error', 2, { 'SwitchCase': 1 }],
       'no-mixed-spaces-and-tabs': 'warn',
@@ -96,7 +98,17 @@ export default [
       'prefer-template': 'warn',
       'no-prototype-builtins': 'off',
       'multiline-ternary': 'off',
-      '@typescript-eslint/no-namespace': 'off'
+      '@typescript-eslint/no-namespace': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+            'vars': 'all',
+            'varsIgnorePattern': '^_',
+            'args': 'after-used',
+            'argsIgnorePattern': '^_',
+        },
+      ]
     }
   }
 ];
