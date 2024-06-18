@@ -39,7 +39,7 @@ export default class Cloudinary {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static async cleanUpCloudinary(files: any) {
-    const keys = Object.keys(files);
+    const keys = Object.keys(files ?? {});
     if (keys.length > 0) {
       keys.map((key: string) => {
         const images = files[key] as any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
