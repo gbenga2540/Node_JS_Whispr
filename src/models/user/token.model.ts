@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { IToken } from '../../types/user';
+import { IToken } from '../../interfaces/user';
 
 const schema = new Schema<IToken>(
   {

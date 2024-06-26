@@ -1,4 +1,4 @@
-import { ICorsOption } from '../../types/cors-option';
+import { ICorsOption } from '../../interfaces/cors-option';
 import { EnvConfig } from '../../utils/get-env';
 
 const CorsOptions: ICorsOption = {

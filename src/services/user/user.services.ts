@@ -17,7 +17,7 @@ import path from 'path';
 import { TokenAction } from '../../utils/token-action';
 import { transporter } from '../../utils/nodemailer-transporter';
 import { nodemailerConfig } from '../../config';
-import { UploadedFiles, UploadedFilesService } from '../../types/files';
+import { UploadedFiles, UploadedFilesService } from '../../interfaces/files';
 import Cloudinary from '../../utils/cloudinary';
 
 export default class UserServices {
@@ -170,6 +170,9 @@ export default class UserServices {
     const check_user = await User.findOne({ email });
     if (check_user === null) {
       return { status: 401, msg: 'Invalid credentials!' };
+    }
+    if (check_user?.banned) {
+      return { status: 403, msg: 'Forbidden Access' };
     }
 
     const user_profile = await Profile.findOne({

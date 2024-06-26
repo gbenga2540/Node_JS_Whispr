@@ -1,7 +1,7 @@
 import { Profile } from '../../models/user/profile.model';
 import { ApiServiceResponse } from '../../utils/api-response';
-import { UploadedFiles, UploadedFilesService } from '../../types/files';
-import { IProfile } from '../../types/user';
+import { UploadedFiles, UploadedFilesService } from '../../interfaces/files';
+import { IProfile } from '../../interfaces/user';
 
 export default class ProfileServices {
   public async updateUserProfileService(

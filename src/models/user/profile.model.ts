@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { IProfile } from '../../types/user';
+import { IProfile } from '../../interfaces/user';
 
 const schema = new Schema<IProfile>(
   {

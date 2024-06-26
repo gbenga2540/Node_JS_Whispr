@@ -1,4 +1,4 @@
-import { IProfile, IUser } from '../../types/user';
+import { IProfile, IUser } from '../../interfaces/user';
 
 export class AuthResponse {
   user_id?: string;
