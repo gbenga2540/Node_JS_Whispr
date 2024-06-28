@@ -5,17 +5,17 @@ import { verifyTokenMiddleware } from '../../middlewares/token/token';
 import { FileType, uploadFactory } from '../../utils/multer';
 
 export class ProfileRoutesV1 {
-  public router_: Router;
+  public _router: Router;
   private profile_controller: ProfileController;
 
   constructor() {
-    this.router_ = Router();
+    this._router = Router();
     this.profile_controller = new ProfileController();
     this.routes();
   }
 
   public get router(): Router {
-    return this.router_;
+    return this._router;
   }
 
   routes() {
