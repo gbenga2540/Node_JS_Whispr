@@ -26,7 +26,7 @@ export class ProfileRoutesV1 {
       this.profile_controller.updateUserProfile,
     );
     this.router.get(
-      '/get/user',
+      '/get_user',
       verifyTokenMiddleware,
       this.profile_controller.getUserProfile,
     );
