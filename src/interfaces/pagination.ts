@@ -4,7 +4,7 @@ export enum ESortOrder {
 }
 export type ISortOrder = `${ESortOrder}`;
 
-export interface PageQueryParam {
+export interface IPagination {
   page: string;
   limit: string;
   sort_ord?: ISortOrder;

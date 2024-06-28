@@ -12,7 +12,9 @@
     "Cloudinary",
     "fieldname",
     "auths",
-    "otpauth_url"
+    "otpauth_url",
+    "levminer",
+    "totp"
   ],
   // flagWords - list of words to be always considered incorrect
   "flagWords": [""]

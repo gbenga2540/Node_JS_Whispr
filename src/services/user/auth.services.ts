@@ -112,8 +112,8 @@ export default class AuthServices {
       files as UploadedFilesService<'profile_picture'>;
 
     const [existing_user, existing_profile] = await Promise.all([
-      Auth.findOne({ $or: [{ email }, { user_name }] }),
-      Profile.findOne({ phone_number }),
+      Auth.findOne({ email }),
+      Profile.findOne({ $or: [{ phone_number }, { user_name }] }),
     ]);
 
     if (existing_user || existing_profile) {

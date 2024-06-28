@@ -6,6 +6,7 @@ const schema = new Schema<IAuth>(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,

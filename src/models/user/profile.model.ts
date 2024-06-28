@@ -10,6 +10,7 @@ const schema = new Schema<IProfile>(
     user_name: {
       type: String,
       required: true,
+      unique: true,
     },
     full_name: {
       type: String,
@@ -17,6 +18,8 @@ const schema = new Schema<IProfile>(
     },
     phone_number: {
       type: String,
+      required: true,
+      unique: true,
     },
     bio: {
       type: String,

@@ -8,6 +8,7 @@ export class AuthResponse {
   phone_number?: string;
   bio?: string;
   profile_picture?: string;
+  joined?: Date;
 
   static createResponse(auth: IAuth, profile: IProfile): AuthResponse {
     return {
@@ -18,6 +19,7 @@ export class AuthResponse {
       phone_number: profile.phone_number,
       bio: profile.bio,
       profile_picture: profile.profile_picture,
+      joined: auth.createdAt,
     };
   }
 }
