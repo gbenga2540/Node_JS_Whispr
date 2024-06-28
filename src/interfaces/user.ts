@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import { MongoDocument } from './mongo-document';
 
-export interface IUser extends MongoDocument {
+export interface IAuth extends MongoDocument {
   email: string;
   password: string;
   banned?: boolean;

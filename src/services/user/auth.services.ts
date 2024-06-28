@@ -1,4 +1,4 @@
-import { User } from '../../models/user/user.model';
+import { Auth } from '../../models/user/auth.model';
 import { Profile } from '../../models/user/profile.model';
 import { bcryptHasher } from '../../utils/bcrypt';
 import { ApiServiceResponse } from '../../utils/api-response';
@@ -11,7 +11,7 @@ import {
   RegisterRequest,
   RequestVerCodeRequest,
   VerifyVerCodeRequest,
-} from '../../dtos/user/user.dto';
+} from '../../dtos/user/auth.dto';
 import fs from 'fs';
 import path from 'path';
 import { TokenAction } from '../../utils/token-action';
@@ -20,7 +20,7 @@ import { nodemailerConfig } from '../../config';
 import { UploadedFiles, UploadedFilesService } from '../../interfaces/files';
 import Cloudinary from '../../utils/cloudinary';
 
-export default class UserServices {
+export default class AuthServices {
   // =============================================
   // Request verification Code
   // =============================================
@@ -47,7 +47,7 @@ export default class UserServices {
     const { email, phone_number, user_name } = user;
 
     const [existing_user, existing_profile] = await Promise.all([
-      User.findOne({ $or: [{ email }, { user_name }] }),
+      Auth.findOne({ $or: [{ email }, { user_name }] }),
       Profile.findOne({ phone_number }),
     ]);
     if (existing_user || existing_profile) {
@@ -112,7 +112,7 @@ export default class UserServices {
       files as UploadedFilesService<'profile_picture'>;
 
     const [existing_user, existing_profile] = await Promise.all([
-      User.findOne({ $or: [{ email }, { user_name }] }),
+      Auth.findOne({ $or: [{ email }, { user_name }] }),
       Profile.findOne({ phone_number }),
     ]);
 
@@ -126,7 +126,7 @@ export default class UserServices {
     let payload;
 
     await startTransaction(async session => {
-      new_user = await User.create(
+      new_user = await Auth.create(
         [{ email, password: await bcryptHasher.hashPasswordHandler(password) }],
         { session },
       );
@@ -167,7 +167,7 @@ export default class UserServices {
   ): Promise<ApiServiceResponse<{ token: string; user: AuthResponse }>> {
     const { email, password } = user;
 
-    const check_user = await User.findOne({ email });
+    const check_user = await Auth.findOne({ email });
     if (check_user === null) {
       return { status: 401, msg: 'Invalid credentials!' };
     }

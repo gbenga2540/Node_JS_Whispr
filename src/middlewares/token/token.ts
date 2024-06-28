@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt, { GetPublicKeyOrSecret, Secret } from 'jsonwebtoken';
 import { MyJwtPayload } from '../../utils/jwt';
 import { EnvConfig } from '../../utils/get-env';
-import { User } from '../../models/user/user.model';
+import { Auth } from '../../models/user/auth.model';
 
 declare global {
   namespace Express {
@@ -32,8 +32,8 @@ export const verifyTokenMiddleware = async (
 
       req.user_id = decoded.user_id;
 
-      const user = await User.findById(decoded.user_id);
-      if (user?.banned) {
+      const auth = await Auth.findById(decoded.user_id);
+      if (auth?.banned) {
         return res.json({ status: 403, msg: 'Forbidden Access' });
       }
 

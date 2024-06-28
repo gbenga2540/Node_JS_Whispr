@@ -5,7 +5,7 @@ const schema = new Schema<IProfile>(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Auth',
     },
     user_name: {
       type: String,

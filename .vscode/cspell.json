@@ -10,7 +10,9 @@
     "hasher",
     "cloudinary",
     "Cloudinary",
-    "fieldname"
+    "fieldname",
+    "auths",
+    "otpauth_url"
   ],
   // flagWords - list of words to be always considered incorrect
   "flagWords": [""]

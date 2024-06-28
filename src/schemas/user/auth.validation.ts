@@ -4,7 +4,7 @@ import {
   RegisterRequest,
   RequestVerCodeRequest,
   VerifyVerCodeRequest,
-} from '../../dtos/user/user.dto';
+} from '../../dtos/user/auth.dto';
 
 export const RequestVerCodeValidation = Joi.object<RequestVerCodeRequest>({
   email: Joi.string().required().pattern(/^\S+$/),

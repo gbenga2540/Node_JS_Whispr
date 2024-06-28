@@ -2,8 +2,8 @@ import { Profile } from '../../models/user/profile.model';
 import { ApiServiceResponse } from '../../utils/api-response';
 import { UploadedFiles, UploadedFilesService } from '../../interfaces/files';
 import { IProfile } from '../../interfaces/user';
-import { AuthResponse } from '../../dtos/user/user.dto';
-import { User } from '../../models/user/user.model';
+import { AuthResponse } from '../../dtos/user/auth.dto';
+import { Auth } from '../../models/user/auth.model';
 
 export default class ProfileServices {
   public async updateUserProfileService(
@@ -21,7 +21,7 @@ export default class ProfileServices {
     user_id: string,
   ): Promise<ApiServiceResponse<AuthResponse>> {
     const [user, profile] = await Promise.all([
-      User.findById(user_id),
+      Auth.findById(user_id),
       Profile.findOne({ user: user_id }),
     ]);
 

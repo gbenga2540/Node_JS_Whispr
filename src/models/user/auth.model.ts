@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
-import { IUser } from '../../interfaces/user';
+import { IAuth } from '../../interfaces/user';
 
-const schema = new Schema<IUser>(
+const schema = new Schema<IAuth>(
   {
     email: {
       type: String,
@@ -20,4 +20,4 @@ const schema = new Schema<IUser>(
   { timestamps: true },
 );
 
-export const User = model<IUser>('User', schema, 'users');
+export const Auth = model<IAuth>('Auth', schema, 'auths');

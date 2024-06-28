@@ -1,22 +1,22 @@
 'use strict';
 import { Router } from 'express';
-import { UserController } from '../../controllers/user/user.controller';
+import { AuthController } from '../../controllers/user/auth.controller';
 import {
   LoginValidation,
   RegisterValidation,
   RequestVerCodeValidation,
   VerifyVerCodeValidation,
-} from '../../schemas/user/user.validation';
+} from '../../schemas/user/auth.validation';
 import { RequestValidator } from '../../middlewares/validator/validator';
 import { FileType, uploadFactory } from '../../utils/multer';
 
-export class UserRoutesV1 {
+export class AuthRoutesV1 {
   private _router: Router;
-  private userController: UserController;
+  private authController: AuthController;
 
   constructor() {
     this._router = Router();
-    this.userController = new UserController();
+    this.authController = new AuthController();
     this.routes();
   }
 
@@ -28,23 +28,23 @@ export class UserRoutesV1 {
     this.router.post(
       '/get_code',
       RequestValidator(RequestVerCodeValidation, 'body'),
-      this.userController.requestVerCode,
+      this.authController.requestVerCode,
     );
     this.router.post(
       '/verify_code',
       RequestValidator(VerifyVerCodeValidation, 'body'),
-      this.userController.verifyVerCode,
+      this.authController.verifyVerCode,
     );
     this.router.post(
       '/register',
       uploadFactory({ profile_picture: FileType.IMAGE }),
       RequestValidator(RegisterValidation, 'body'), // TODO: Temporary till the form-data multer thing is fixed
-      this.userController.registerUser,
+      this.authController.registerUser,
     );
     this.router.post(
       '/login',
       RequestValidator(LoginValidation, 'body'),
-      this.userController.loginUser,
+      this.authController.loginUser,
     );
   }
 }

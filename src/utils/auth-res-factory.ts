@@ -1,11 +1,11 @@
-import { IProfile, IUser } from '../interfaces/user';
-import { AuthResponse } from '../dtos/user/user.dto';
+import { IProfile, IAuth } from '../interfaces/user';
+import { AuthResponse } from '../dtos/user/auth.dto';
 import { MyJwtPayload, signJwt } from './jwt';
 import { EnvConfig } from './get-env';
 
 export const authResFactory = (
   payload: MyJwtPayload,
-  user: IUser,
+  auth: IAuth,
   profile: IProfile,
 ) => {
   const token = signJwt(payload, EnvConfig.jwtAuthExpiration);
@@ -14,7 +14,7 @@ export const authResFactory = (
       status: 200,
       data: {
         token,
-        user: AuthResponse.createResponse(user, profile),
+        user: AuthResponse.createResponse(auth, profile),
       },
     };
   } else {
