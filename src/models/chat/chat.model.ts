@@ -9,7 +9,12 @@ const schema = new Schema<IChat>(
       ref: 'Auth',
     },
   },
-  { timestamps: true },
+  {
+    timestamps: {
+      createdAt: true,
+      updatedAt: false,
+    },
+  },
 );
 
 export const Chat = model<IChat>('Chat', schema, 'chats');
