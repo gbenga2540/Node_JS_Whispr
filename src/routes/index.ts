@@ -1,6 +1,7 @@
 import { Application, Request, Response } from 'express';
 import setupBaseMiddleware from '../middlewares/index';
 import { setupUserApiRoutes } from './user';
+import { setupChatApiRoutes } from './chat';
 
 export const setupRoutes = (app: Application): void => {
   // ==============================================
@@ -12,6 +13,7 @@ export const setupRoutes = (app: Application): void => {
   // setup routes
   // ==============================================
   setupUserApiRoutes(app);
+  setupChatApiRoutes(app);
 
   // base route
   app.get('/api/v1', (req: Request, res: Response) => {
