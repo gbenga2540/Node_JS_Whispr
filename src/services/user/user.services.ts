@@ -4,13 +4,13 @@ import { PagingWithAggregate } from '../../utils/pagination';
 import { PipelineStage } from 'mongoose';
 import { PageRes } from '../../interfaces/pagination';
 import { GetUsersRequest } from '../../dtos/user/user.dto';
-import { QueryRequest } from '../../utils/api-request';
+import { RequestQuery } from '../../utils/api-request';
 import { IAuth, IProfile } from '../../interfaces/user';
 import { Profile } from '../../models/user/profile.model';
 
 export default class UserServices {
   public async getUsersService(
-    query: QueryRequest<GetUsersRequest>,
+    query: RequestQuery<GetUsersRequest>,
   ): Promise<ApiServiceResponse<PageRes<AuthResponse>>> {
     const page = parseInt(query.page as string);
     const limit = parseInt(query.limit as string);

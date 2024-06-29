@@ -14,4 +14,13 @@ export class ChatController {
       handleServerErrors(req, res, error);
     }
   }
+
+  public async getUserChats(req: Request, res: Response) {
+    try {
+      const result = await new ChatServices().getUserChatsService(req.params);
+      handleApiResponse(res, result);
+    } catch (error) {
+      handleServerErrors(req, res, error);
+    }
+  }
 }
