@@ -17,7 +17,10 @@ export class ChatController {
 
   public async getUserChats(req: Request, res: Response) {
     try {
-      const result = await new ChatServices().getUserChatsService(req.params);
+      const result = await new ChatServices().getUserChatsService(
+        req.params,
+        req.query,
+      );
       handleApiResponse(res, result);
     } catch (error) {
       handleServerErrors(req, res, error);

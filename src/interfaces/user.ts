@@ -1,4 +1,3 @@
-import { Types } from 'mongoose';
 import { MongoDocument } from './mongo-document';
 
 export interface IAuth extends MongoDocument {
@@ -8,7 +7,7 @@ export interface IAuth extends MongoDocument {
 }
 
 export interface IProfile extends MongoDocument {
-  user: Types.ObjectId;
+  user: IAuth['_id'];
   user_name: string;
   full_name: string;
   phone_number: string;

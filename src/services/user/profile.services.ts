@@ -4,7 +4,6 @@ import { UploadedFiles, UploadedFilesService } from '../../interfaces/files';
 import { IProfile } from '../../interfaces/user';
 import { AuthResponse } from '../../dtos/user/auth.dto';
 import { Auth } from '../../models/user/auth.model';
-import { UserIDRequest } from '../../dtos/user/user.dto';
 
 export default class ProfileServices {
   public async updateUserProfileService(

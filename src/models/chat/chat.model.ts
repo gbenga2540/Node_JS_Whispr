@@ -1,10 +1,10 @@
-import { model, Schema, Types } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { IChat } from '../../interfaces/chat';
 
 const schema = new Schema<IChat>(
   {
     members: {
-      type: [Types.ObjectId],
+      type: [Schema.Types.ObjectId],
       required: true,
       ref: 'Auth',
     },

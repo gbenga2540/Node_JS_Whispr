@@ -12,8 +12,7 @@ export default class UserServices {
   public async getUsersService(
     query: RequestQuery<GetUsersRequest>,
   ): Promise<ApiServiceResponse<PageRes<AuthResponse>>> {
-    const page = parseInt(query.page as string);
-    const limit = parseInt(query.limit as string);
+    const { page, limit } = query;
 
     const pipeline: PipelineStage[] = [
       {
@@ -51,8 +50,8 @@ export default class UserServices {
       Profile,
       queryOptions.$match,
       pipeline,
-      page,
-      limit,
+      page as string,
+      limit as string,
     );
 
     interface CustomUser extends IProfile {

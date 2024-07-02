@@ -44,8 +44,8 @@ const PagingBase = async <T extends Document>(
 export const PagingNoAggregate = async <T extends Document>(
   collection: Model<T>,
   query: object,
-  startPage: number,
-  limit: number,
+  startPage: string,
+  limit: string,
   sort_ord?: ISortOrder,
   sort_column?: string,
 ): Promise<PageRes<T>> => {
@@ -53,8 +53,8 @@ export const PagingNoAggregate = async <T extends Document>(
     collection,
     query,
     [],
-    startPage,
-    limit,
+    parseInt(startPage, 10),
+    parseInt(limit, 10),
     sort_ord,
     sort_column,
   );
@@ -64,8 +64,8 @@ export const PagingWithAggregate = async <T extends Document>(
   collection: Model<T>,
   query: object,
   pipeline: PipelineStage[],
-  startPage: number,
-  limit: number,
+  startPage: string,
+  limit: string,
   sort_ord?: ISortOrder,
   sort_column?: string,
 ): Promise<PageRes<T>> => {
@@ -73,8 +73,8 @@ export const PagingWithAggregate = async <T extends Document>(
     collection,
     query,
     pipeline,
-    startPage,
-    limit,
+    parseInt(startPage, 10),
+    parseInt(limit, 10),
     sort_ord,
     sort_column,
   );
