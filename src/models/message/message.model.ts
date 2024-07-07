@@ -21,6 +21,7 @@ const schema = new Schema<IMessage>(
       type: String,
       required: true,
       enum: Object.values(IMessageType),
+      default: IMessageType.Text,
     },
     data: {
       type: String,
@@ -28,8 +29,9 @@ const schema = new Schema<IMessage>(
     },
     status: {
       type: String,
-      required: true,
+      required: false,
       enum: Object.values(IMessageStatus),
+      default: IMessageStatus.U,
     },
   },
   {

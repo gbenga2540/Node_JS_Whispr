@@ -19,7 +19,7 @@ export enum IMessageStatus {
 export interface IMessage extends MongoDocument {
   chat_id: IChat['_id'];
   sender_id: IAuth['_id'];
-  type: IMessageType;
+  type: `${IMessageType}`;
   data: string;
-  status: IMessageStatus;
+  status: `${IMessageStatus}`;
 }
