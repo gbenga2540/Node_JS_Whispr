@@ -51,7 +51,7 @@ export default class AuthServices {
       Profile.findOne({ phone_number }),
     ]);
     if (existing_user || existing_profile) {
-      return { status: 400, msg: 'Invalid credentials' };
+      return { status: 400, msg: 'User already exist!' };
     }
 
     const token = await TokenAction.generateSecretAndToken(email);
