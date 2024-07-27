@@ -47,8 +47,8 @@ export default class AuthServices {
     const { email, phone_number, user_name } = body;
 
     const [existing_user, existing_profile] = await Promise.all([
-      Auth.findOne({ $or: [{ email }, { user_name }] }),
-      Profile.findOne({ phone_number }),
+      Auth.findOne({ email }),
+      Profile.findOne({ $or: [{ phone_number }, { user_name }] }),
     ]);
     if (existing_user || existing_profile) {
       return { status: 400, msg: 'User already exist!' };
