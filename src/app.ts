@@ -11,14 +11,18 @@ dotenv.config();
 
 import express, { Application } from 'express';
 import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 import logger from './utils/logger';
 import './database';
 import { EnvConfig } from './utils/get-env';
 import { setupRoutes } from './routes';
+import { appSocket } from './socket';
+import CorsOptions from './middlewares/cors/cors';
 
 const app: Application = express();
 const server = createServer(app);
+const io = new Server(server, { cors: CorsOptions });
 const port = parseInt(EnvConfig.serverPort, 10) || 5000;
 
 // ==============================================
@@ -43,6 +47,8 @@ const serverError = (error: NodeJS.ErrnoException): void => {
       throw error;
   }
 };
+
+appSocket(io);
 
 // ==============================================
 // Server implt.

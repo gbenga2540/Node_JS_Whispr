@@ -136,6 +136,35 @@ export default class ChatServices {
         $unwind: '$recipient',
       },
       {
+        $lookup: {
+          from: 'messages',
+          localField: '_id',
+          foreignField: 'chat_id',
+          as: 'messages',
+        },
+      },
+      {
+        $addFields: {
+          last_message: {
+            $arrayElemAt: ['$messages', -1],
+          },
+          unread_count: {
+            $size: {
+              $filter: {
+                input: '$messages',
+                as: 'message',
+                cond: {
+                  $and: [
+                    { $eq: ['$$message.status', 'U'] },
+                    { $eq: ['$$message.sender_id', '$receiverId'] },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      },
+      {
         $project: {
           chat_id: '$_id',
           created_at: '$createdAt',
@@ -143,13 +172,25 @@ export default class ChatServices {
             user_id: '$recipient._id',
             user_name: '$recipient.user_name',
             profile_picture: '$recipient.profile_picture',
+            bio: '$recipient.bio',
+            full_name: '$recipient.full_name',
+            phone_number: '$recipient.phone_number',
           },
+          last_message_info: {
+            text: '$last_message.data',
+            at: '$last_message.createdAt',
+            unread: '$unread_count',
+            status: '$last_message.status',
+            type: '$last_message.type',
+          },
+          messages: '$messages',
         },
       },
       {
         $project: {
           _id: 0,
           members: 0,
+          messages: 0,
         },
       },
     ];
