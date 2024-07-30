@@ -40,10 +40,11 @@ export default class MessageServices {
     };
     if (from) {
       const messages_from = new Date(from as string);
-      filter.createdAt = { $gte: messages_from };
+      filter.createdAt = { $gt: messages_from };
     }
 
-    const response = await Message.find(filter).sort({ createdAt: -1 });
+    const response = await Message.find(filter);
+    // .sort({ createdAt: 1 });
 
     return { status: 200, data: response };
   }
