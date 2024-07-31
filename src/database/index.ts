@@ -29,9 +29,9 @@ mongoose
 
 // db connection events
 mongoose.connection.on('connected', () => {
-  EnvConfig.nodeEnv === 'development'
-    ? logger.debug(`Mongoose connected open to ${uri}`)
-    : logger.info('Mongoose Connected!');
+  EnvConfig.nodeEnv === 'prod'
+    ? logger.info('Mongoose Connected!')
+    : logger.debug(`Mongoose connected open to ${uri}`);
 });
 
 mongoose.connection.on('error', error => {
