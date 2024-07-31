@@ -4,8 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 try {
-  const sourceDirectory = './src/view/';
-  const destinationDirectory = './dist/view/';
+  const sourceDirectories = ['./src/view/', './src/assets/'];
+  const destinationDirectories = ['./dist/view/', './dist/assets/'];
+
+  if (sourceDirectories.length !== destinationDirectories.length) {
+    throw new Error(
+      'Source and destination directories arrays must have the same length.',
+    );
+  }
 
   const copyRecursiveSync = (source, target) => {
     const files = fs.readdirSync(source);
@@ -26,7 +32,10 @@ try {
     });
   };
 
-  copyRecursiveSync(sourceDirectory, destinationDirectory);
+  sourceDirectories.forEach((sourceDir, index) => {
+    const destDir = destinationDirectories[index];
+    copyRecursiveSync(sourceDir, destDir);
+  });
 
   /* eslint-disable no-console */
   console.log('\x1b[32m==================================\x1b[0m');
