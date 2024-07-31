@@ -1,8 +1,7 @@
 version: '3.8'
 
 services:
-  # TODO: Enter your project name here
-  project_name:
+  whispr:
     build:
       context: .
     restart: always

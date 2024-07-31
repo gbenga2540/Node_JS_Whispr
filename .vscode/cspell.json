@@ -14,7 +14,9 @@
     "auths",
     "otpauth_url",
     "levminer",
-    "totp"
+    "totp",
+    "killall",
+    "gbenga"
   ],
   // flagWords - list of words to be always considered incorrect
   "flagWords": [""]
