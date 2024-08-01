@@ -6,7 +6,7 @@ const schema = new Schema<IChat>(
     members: {
       type: [Schema.Types.ObjectId],
       required: true,
-      ref: 'Auth',
+      // ref: 'Auth',
     },
   },
   {
