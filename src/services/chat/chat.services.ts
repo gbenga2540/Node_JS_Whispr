@@ -50,7 +50,7 @@ export default class ChatServices {
           chat_id: '$_id',
           created_at: '$createdAt',
           recipient_info: {
-            user_id: '$recipient._id',
+            user_id: '$recipient.user',
             user_name: '$recipient.user_name',
             profile_picture: '$recipient.profile_picture',
             bio: '$recipient.bio',
@@ -76,7 +76,6 @@ export default class ChatServices {
     const chat_exist = await Chat.findOne({
       members: { $all: [sender_id, receiver_id] },
     });
-    console.log('chat_exist', chat_exist);
 
     if (chat_exist) {
       const response = await this.getChatsInfo(
@@ -87,11 +86,9 @@ export default class ChatServices {
       return { status: 200, data: response[0] };
     }
 
-    console.log(sender_id, receiver_id);
     const chat = await Chat.create({
       members: [sender_id, receiver_id],
     });
-    console.log('chat', chat);
 
     const response = await this.getChatsInfo(
       chat._id,
