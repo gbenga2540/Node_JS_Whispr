@@ -1,4 +1,8 @@
-import { IMessageStatus, IMessageType } from '../../interfaces/message';
+import {
+  IMessage,
+  IMessageStatus,
+  IMessageType,
+} from '../../interfaces/message';
 
 export interface CreateChatRequest {
   sender_id: string; // basically the firstId, doesn't matter if it is sender or receiver
@@ -8,6 +12,7 @@ export interface CreateChatRequest {
 export interface GetUserChatsResponse {
   chat_id: string;
   created_at: string;
+  updated_at: string;
   recipient_info: {
     user_id: string;
     user_name: string;
@@ -17,10 +22,11 @@ export interface GetUserChatsResponse {
     phone_number: string;
   };
   last_message_info: {
-    text: string;
+    data: string;
     at: string;
     unread: number;
     status: `${IMessageStatus}`;
     type: `${IMessageType}`;
+    sender_id: IMessage['sender_id'];
   };
 }

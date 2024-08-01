@@ -8,6 +8,7 @@ import { ApiServiceResponse } from '../../utils/api-response';
 import { FilterQuery, Types } from 'mongoose';
 import { RequestParams, RequestQuery } from '../../utils/api-request';
 import { IMessage } from '../../interfaces/message';
+import { Chat } from '../../models/chat/chat.model';
 
 export default class MessageServices {
   public async createMessageService(
@@ -21,6 +22,11 @@ export default class MessageServices {
       type,
       data,
     });
+
+    await Chat.updateOne(
+      { _id: new Types.ObjectId(chat_id) },
+      { $set: { updatedAt: new Date() } },
+    );
 
     return {
       status: 200,

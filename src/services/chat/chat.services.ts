@@ -49,6 +49,7 @@ export default class ChatServices {
         $project: {
           chat_id: '$_id',
           created_at: '$createdAt',
+          updated_at: '$updatedAt',
           recipient_info: {
             user_id: '$recipient.user',
             user_name: '$recipient.user_name',
@@ -171,6 +172,7 @@ export default class ChatServices {
         $project: {
           chat_id: '$_id',
           created_at: '$createdAt',
+          updated_at: '$updatedAt',
           recipient_info: {
             user_id: '$recipient.user',
             user_name: '$recipient.user_name',
@@ -180,11 +182,12 @@ export default class ChatServices {
             phone_number: '$recipient.phone_number',
           },
           last_message_info: {
-            text: '$last_message.data',
+            data: '$last_message.data',
             at: '$last_message.createdAt',
             unread: '$unread_count',
             status: '$last_message.status',
             type: '$last_message.type',
+            sender_id: '$last_message.sender_id',
           },
           messages: '$messages',
         },
