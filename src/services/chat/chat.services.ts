@@ -70,12 +70,13 @@ export default class ChatServices {
   }
 
   public async createChatService(
+    sender_id: string,
     body: CreateChatRequest,
   ): Promise<ApiServiceResponse<GetUserChatsResponse>> {
-    const { sender_id, receiver_id } = body;
+    const { recipient_id } = body;
 
     const chat_exist = await Chat.findOne({
-      members: { $all: [sender_id, receiver_id] },
+      members: { $all: [sender_id, recipient_id] },
     });
 
     if (chat_exist) {
@@ -88,7 +89,7 @@ export default class ChatServices {
     }
 
     const chat = await Chat.create({
-      members: [sender_id, receiver_id],
+      members: [sender_id, recipient_id],
     });
 
     const response = await this.getChatsInfo(

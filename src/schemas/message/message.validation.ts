@@ -8,7 +8,6 @@ import { IMessageType } from '../../interfaces/message';
 
 export const CreateMessageValidation = Joi.object<CreateMessageRequest>({
   chat_id: Joi.string().required(),
-  sender_id: Joi.string().required(),
   type: Joi.string()
     .required()
     .valid(...Object.values(IMessageType)),

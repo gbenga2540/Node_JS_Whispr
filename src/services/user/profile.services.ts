@@ -25,9 +25,13 @@ export default class ProfileServices {
       Profile.findOne({ user: user_id }),
     ]);
 
+    if (!user || !profile) {
+      return { status: 404, msg: 'User not found!' };
+    }
+
     const response = AuthResponse.createResponse(
-      user!.toObject(),
-      profile!.toObject(),
+      user!?.toObject(),
+      profile!?.toObject(),
     );
 
     return { status: 200, data: response };

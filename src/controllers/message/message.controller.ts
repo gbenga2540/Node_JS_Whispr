@@ -8,7 +8,10 @@ import {
 export class MessageController {
   public async createMessage(req: Request, res: Response) {
     try {
-      const result = await new MessageServices().createMessageService(req.body);
+      const result = await new MessageServices().createMessageService(
+        req.user_id,
+        req.body,
+      );
       handleApiResponse(res, result);
     } catch (error) {
       handleServerErrors(req, res, error);

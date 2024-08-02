@@ -7,6 +7,7 @@ import {
   GetUserMessagesParamsValidation,
   GetUserMessagesQueryValidation,
 } from '../../schemas/message/message.validation';
+import { verifyTokenMiddleware } from '../../middlewares/token/token';
 
 export class MessageRoutesV1 {
   private _router: Router;
@@ -26,12 +27,14 @@ export class MessageRoutesV1 {
     this.router.post(
       '/create',
       RequestValidator(CreateMessageValidation, 'body'),
+      verifyTokenMiddleware,
       this.messageController.createMessage,
     );
     this.router.get(
       '/get_messages/:chat_id',
       RequestValidator(GetUserMessagesParamsValidation, 'params'),
       RequestValidator(GetUserMessagesQueryValidation, 'query'),
+      verifyTokenMiddleware,
       this.messageController.getChatMessages,
     );
   }

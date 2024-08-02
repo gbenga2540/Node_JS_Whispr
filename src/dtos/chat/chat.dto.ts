@@ -5,8 +5,7 @@ import {
 } from '../../interfaces/message';
 
 export interface CreateChatRequest {
-  sender_id: string; // basically the firstId, doesn't matter if it is sender or receiver
-  receiver_id: string;
+  recipient_id: string;
 }
 
 export interface GetUserChatsResponse {

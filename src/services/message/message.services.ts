@@ -12,9 +12,10 @@ import { Chat } from '../../models/chat/chat.model';
 
 export default class MessageServices {
   public async createMessageService(
+    sender_id: string,
     body: CreateMessageRequest,
   ): Promise<ApiServiceResponse<string>> {
-    const { chat_id, data, sender_id, type } = body;
+    const { chat_id, data, type } = body;
 
     await Message.create({
       chat_id: new Types.ObjectId(chat_id),
@@ -50,7 +51,6 @@ export default class MessageServices {
     }
 
     const response = await Message.find(filter);
-    // .sort({ createdAt: 1 });
 
     return { status: 200, data: response };
   }
