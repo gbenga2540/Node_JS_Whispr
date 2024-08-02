@@ -8,7 +8,10 @@ import {
 export class ChatController {
   public async createChat(req: Request, res: Response) {
     try {
-      const result = await new ChatServices().createChatService(req.body);
+      const result = await new ChatServices().createChatService(
+        req.user_id,
+        req.body,
+      );
       handleApiResponse(res, result);
     } catch (error) {
       handleServerErrors(req, res, error);

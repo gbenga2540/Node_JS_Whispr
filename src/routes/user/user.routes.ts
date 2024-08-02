@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { UserController } from '../../controllers/user/user.controller';
 import { RequestValidator } from '../../middlewares/validator/validator';
 import { GetUsersValidation } from '../../schemas/user/user.validation';
+import { verifyTokenMiddleware } from '../../middlewares/token/token';
 
 export class UserRoutesV1 {
   private _router: Router;
@@ -22,6 +23,7 @@ export class UserRoutesV1 {
     this.router.get(
       '/get_users',
       RequestValidator(GetUsersValidation, 'query'),
+      verifyTokenMiddleware,
       this.userController.getUsers,
     );
   }

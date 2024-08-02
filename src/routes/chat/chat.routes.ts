@@ -5,6 +5,7 @@ import { RequestValidator } from '../../middlewares/validator/validator';
 import { CreateChatValidation } from '../../schemas/chat/chat.validation';
 import { UserIDValidation } from '../../schemas/user/user.validation';
 import { PaginationValidation } from '../../schemas/pagination/pagination.validation';
+import { verifyTokenMiddleware } from '../../middlewares/token/token';
 
 export class ChatRoutesV1 {
   private _router: Router;
@@ -24,12 +25,14 @@ export class ChatRoutesV1 {
     this.router.post(
       '/create',
       RequestValidator(CreateChatValidation, 'body'),
+      verifyTokenMiddleware,
       this.chatController.createChat,
     );
     this.router.get(
       '/get_chats/:user_id',
       RequestValidator(UserIDValidation, 'params'),
       RequestValidator(PaginationValidation, 'query'),
+      verifyTokenMiddleware,
       this.chatController.getUserChats,
     );
   }

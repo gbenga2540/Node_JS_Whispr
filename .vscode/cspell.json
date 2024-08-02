@@ -17,7 +17,9 @@
     "totp",
     "killall",
     "gbenga",
-    "whsipr"
+    "whsipr",
+    "EACCESS",
+    "implt"
   ],
   // flagWords - list of words to be always considered incorrect
   "flagWords": [""]

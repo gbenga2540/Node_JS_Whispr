@@ -19,12 +19,12 @@ export class ProfileRoutesV1 {
   }
 
   routes() {
-    this.router.patch(
-      '/user',
-      verifyTokenMiddleware,
-      uploadFactory({ profile_image: FileType.IMAGE }), // TODO: Temporary till the form-data multer thing is fixed
-      this.profile_controller.updateUserProfile,
-    );
+    // this.router.patch(
+    //   '/user',
+    //   verifyTokenMiddleware,
+    //   uploadFactory({ profile_image: FileType.IMAGE }), // TODO: Temporary till the form-data multer thing is fixed
+    //   this.profile_controller.updateUserProfile,
+    // );
     this.router.get(
       '/get_user',
       verifyTokenMiddleware,
