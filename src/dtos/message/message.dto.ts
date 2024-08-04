@@ -1,4 +1,4 @@
-import { IMessageType } from '../../interfaces/message';
+import { IMessage, IMessageType } from '../../interfaces/message';
 
 export interface CreateMessageRequest {
   chat_id: string;
@@ -6,11 +6,12 @@ export interface CreateMessageRequest {
   type: `${IMessageType}`;
   data: string;
 }
+export type CreateMessageResponse = string;
 
-export interface GetUserMessagesParamsRequest {
+export interface GetChatMessagesParamsRequest {
   chat_id: string;
 }
-
-export interface GetUserMessagesQueryRequest {
+export interface GetChatMessagesQueryRequest {
   from: string;
 }
+export type GetChatMessagesResponse = IMessage[];

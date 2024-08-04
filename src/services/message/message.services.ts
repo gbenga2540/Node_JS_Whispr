@@ -1,7 +1,9 @@
 import {
   CreateMessageRequest,
-  GetUserMessagesParamsRequest,
-  GetUserMessagesQueryRequest,
+  CreateMessageResponse,
+  GetChatMessagesParamsRequest,
+  GetChatMessagesQueryRequest,
+  GetChatMessagesResponse,
 } from '../../dtos/message/message.dto';
 import { Message } from '../../models/message/message.model';
 import { ApiServiceResponse } from '../../utils/api-response';
@@ -14,7 +16,7 @@ export default class MessageServices {
   public async createMessageService(
     sender_id: string,
     body: CreateMessageRequest,
-  ): Promise<ApiServiceResponse<string>> {
+  ): Promise<ApiServiceResponse<CreateMessageResponse>> {
     const { chat_id, data, type } = body;
 
     await Message.create({
@@ -36,9 +38,9 @@ export default class MessageServices {
   }
 
   public async getChatMessagesService(
-    params: RequestParams<GetUserMessagesParamsRequest>,
-    query: RequestQuery<GetUserMessagesQueryRequest>,
-  ): Promise<ApiServiceResponse<IMessage[]>> {
+    params: RequestParams<GetChatMessagesParamsRequest>,
+    query: RequestQuery<GetChatMessagesQueryRequest>,
+  ): Promise<ApiServiceResponse<GetChatMessagesResponse>> {
     const { chat_id } = params;
     const { from } = query;
 

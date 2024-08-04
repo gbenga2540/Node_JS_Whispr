@@ -1,8 +1,8 @@
 import Joi from 'joi';
 import {
   CreateMessageRequest,
-  GetUserMessagesParamsRequest,
-  GetUserMessagesQueryRequest,
+  GetChatMessagesParamsRequest,
+  GetChatMessagesQueryRequest,
 } from '../../dtos/message/message.dto';
 import { IMessageType } from '../../interfaces/message';
 
@@ -14,12 +14,12 @@ export const CreateMessageValidation = Joi.object<CreateMessageRequest>({
   data: Joi.string().required().min(2),
 });
 
-export const GetUserMessagesParamsValidation =
-  Joi.object<GetUserMessagesParamsRequest>({
+export const GetChatMessagesParamsValidation =
+  Joi.object<GetChatMessagesParamsRequest>({
     chat_id: Joi.string().required(),
   });
 
-export const GetUserMessagesQueryValidation =
-  Joi.object<GetUserMessagesQueryRequest>({
+export const GetChatMessagesQueryValidation =
+  Joi.object<GetChatMessagesQueryRequest>({
     from: Joi.string().optional().empty(''),
   });
