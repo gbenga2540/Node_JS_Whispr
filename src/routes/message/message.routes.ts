@@ -4,8 +4,8 @@ import { MessageController } from '../../controllers/message/message.controller'
 import { RequestValidator } from '../../middlewares/validator/validator';
 import {
   CreateMessageValidation,
-  GetUserMessagesParamsValidation,
-  GetUserMessagesQueryValidation,
+  GetChatMessagesParamsValidation,
+  GetChatMessagesQueryValidation,
 } from '../../schemas/message/message.validation';
 import { verifyTokenMiddleware } from '../../middlewares/token/token';
 
@@ -32,8 +32,8 @@ export class MessageRoutesV1 {
     );
     this.router.get(
       '/get_messages/:chat_id',
-      RequestValidator(GetUserMessagesParamsValidation, 'params'),
-      RequestValidator(GetUserMessagesQueryValidation, 'query'),
+      RequestValidator(GetChatMessagesParamsValidation, 'params'),
+      RequestValidator(GetChatMessagesQueryValidation, 'query'),
       verifyTokenMiddleware,
       this.messageController.getChatMessages,
     );
