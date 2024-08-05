@@ -145,18 +145,18 @@ export default class ChatServices {
           from: 'messages',
           localField: '_id',
           foreignField: 'chat_id',
-          as: 'messages',
+          as: 'chat_messages',
         },
       },
       {
         $addFields: {
           last_message: {
-            $arrayElemAt: ['$messages', -1],
+            $arrayElemAt: ['$chat_messages', -1],
           },
           unread_count: {
             $size: {
               $filter: {
-                input: '$messages',
+                input: '$chat_messages',
                 as: 'message',
                 cond: {
                   $and: [
@@ -190,7 +190,6 @@ export default class ChatServices {
             type: '$last_message.type',
             sender_id: '$last_message.sender_id',
           },
-          messages: '$messages',
         },
       },
       {
