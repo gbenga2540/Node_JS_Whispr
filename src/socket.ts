@@ -73,6 +73,9 @@ export const appSocket = (io: Server) => {
     // send new message and alert the recipient
     socket.on('send_message', async (data: INewMessage) => {
       try {
+        let delivered: boolean = false;
+        console.log(delivered);
+
         // save the message
         const message = await Message.create({
           chat_id: new Types.ObjectId(data?.message?.chat_id),
@@ -88,7 +91,16 @@ export const appSocket = (io: Server) => {
         // Send saved message to the sender
         const sender = onlineUsers.find(user => user.socket_id === socket.id);
         if (sender?.socket_id) {
-          io.to(socket.id).emit('message_sent', message?.toObject());
+          io.to(socket.id).emit('message_sent', {
+            ...message?.toObject(),
+            status: 'D',
+          } as IMessage);
+
+          await Message.findByIdAndUpdate(message?._id, {
+            $set: { status: 'D' },
+          });
+
+          delivered = true;
         }
 
         // Send saved message to the receiver if online
@@ -96,7 +108,10 @@ export const appSocket = (io: Server) => {
           user => user.user_id == data?.receiver_id,
         );
         if (receiver?.socket_id) {
-          io.to(receiver.socket_id).emit('get_message', message?.toObject());
+          io.to(receiver.socket_id).emit('get_message', {
+            ...message?.toObject(),
+            status: delivered ? 'D' : 'U',
+          } as IMessage);
         }
       } catch (error) {}
     });
