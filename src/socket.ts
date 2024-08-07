@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import { GetUserChatsResponse } from './dtos/chat/chat.dto';
-import { IMessage } from './interfaces/message';
+import { IMessage, IMessageStatus } from './interfaces/message';
 import { Message } from './models/message/message.model';
 import { Chat } from './models/chat/chat.model';
 import { Types } from 'mongoose';
@@ -92,32 +92,63 @@ export const appSocket = (io: Server) => {
           user => user.user_id == data?.receiver_id,
         );
         if (receiver?.socket_id) {
+          await Message.findByIdAndUpdate(message?._id, {
+            $set: { status: IMessageStatus.D },
+          });
+
           io.to(receiver.socket_id).emit('get_message', {
             ...message?.toObject(),
-            status: 'D',
+            status: IMessageStatus.D,
           } as IMessage);
-
-          await Message.findByIdAndUpdate(message?._id, {
-            $set: { status: 'D' },
-          });
 
           delivered = true;
         }
 
         // Send saved message to the sender
-        const sender = onlineUsers.find(user => user.socket_id === socket.id);
-        if (sender?.socket_id) {
+        const sender = onlineUsers.some(user => user.socket_id === socket.id);
+        if (sender) {
           io.to(socket.id).emit('message_sent', {
             ...message?.toObject(),
-            status: delivered ? 'D' : 'U',
+            status: delivered ? IMessageStatus.D : IMessageStatus.U,
           } as IMessage);
-
-          await Message.findByIdAndUpdate(message?._id, {
-            $set: { status: 'D' },
-          });
         }
-        
+
         delivered = false;
+      } catch (error) {}
+    });
+
+    // on message read
+    // for a message to have been read, it means the receiver saw it and emitted this event
+    socket.on('on_message_read', async (data: IMessage) => {
+      try {
+        if (data._id) {
+          // update the message
+          await Message.findByIdAndUpdate(data._id, {
+            $set: { status: IMessageStatus.R },
+          });
+
+          // Send updated message id to the receiver if online -> receiver was the person who emitted this event
+          const receiver = onlineUsers.some(
+            user => user.socket_id == socket.id,
+          );
+          if (receiver) {
+            io.to(socket.id).emit('message_read', {
+              ...data,
+              status: IMessageStatus.R,
+            } as IMessage);
+          }
+
+          // Send updated message to the sender of the message
+          const sender = onlineUsers.find(
+            user => user.user_id === data.sender_id?.toString(),
+          );
+          if (sender?.socket_id) {
+            io.to(sender.socket_id).emit('message_read', {
+              ...data,
+              status: IMessageStatus.R,
+            } as IMessage);
+          }
+        }
       } catch (error) {}
     });
 
