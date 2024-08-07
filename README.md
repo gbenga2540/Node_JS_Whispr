@@ -1,3 +1,3 @@
-# NodeJS API Template
+# NodeJS Whispr API
 
-Backend service template
+Whispr Backend service
