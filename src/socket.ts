@@ -74,7 +74,6 @@ export const appSocket = (io: Server) => {
     socket.on('send_message', async (data: INewMessage) => {
       try {
         let delivered: boolean = false;
-        console.log(delivered);
 
         // save the message
         const message = await Message.create({
@@ -113,6 +112,8 @@ export const appSocket = (io: Server) => {
             status: delivered ? 'D' : 'U',
           } as IMessage);
         }
+
+        delivered = false;
       } catch (error) {}
     });
 
