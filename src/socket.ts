@@ -87,10 +87,12 @@ export const appSocket = (io: Server) => {
           { $set: { updatedAt: new Date() } },
         );
 
-        // Send saved message to the sender
-        const sender = onlineUsers.find(user => user.socket_id === socket.id);
-        if (sender?.socket_id) {
-          io.to(socket.id).emit('message_sent', {
+        // Send saved message to the receiver if online
+        const receiver = onlineUsers.find(
+          user => user.user_id == data?.receiver_id,
+        );
+        if (receiver?.socket_id) {
+          io.to(receiver.socket_id).emit('get_message', {
             ...message?.toObject(),
             status: 'D',
           } as IMessage);
@@ -102,17 +104,19 @@ export const appSocket = (io: Server) => {
           delivered = true;
         }
 
-        // Send saved message to the receiver if online
-        const receiver = onlineUsers.find(
-          user => user.user_id == data?.receiver_id,
-        );
-        if (receiver?.socket_id) {
-          io.to(receiver.socket_id).emit('get_message', {
+        // Send saved message to the sender
+        const sender = onlineUsers.find(user => user.socket_id === socket.id);
+        if (sender?.socket_id) {
+          io.to(socket.id).emit('message_sent', {
             ...message?.toObject(),
             status: delivered ? 'D' : 'U',
           } as IMessage);
-        }
 
+          await Message.findByIdAndUpdate(message?._id, {
+            $set: { status: 'D' },
+          });
+        }
+        
         delivered = false;
       } catch (error) {}
     });
